@@ -114,10 +114,10 @@ class EncryptedMessageTest {
    * Test to see if the decrypted message converted the space to ASCII code 64
    */
   void encryptedMessageSpace() {
-    EncryptedMessage encryptedMessage = new EncryptedMessage("dad sad", "dsad");
+    EncryptedMessage encryptedMessage = new EncryptedMessage("dad sad", "a");
 
 
-    int index = encryptedMessage.decryptMessage("dsad").indexOf(" ");
+    int index = encryptedMessage.getMessage().indexOf("a");
 
     
     assertEquals(index, 3);
@@ -128,10 +128,10 @@ class EncryptedMessageTest {
    * Test to see if the decrypted message does not contain ASCII code 64
    */
   void decryptedMessageSpace() {
-    EncryptedMessage encryptedMessage = new EncryptedMessage("dadsad", "dsad");
+    EncryptedMessage encryptedMessage = new EncryptedMessage("dadsad", "a");
 
 
-    int index = encryptedMessage.decryptMessage("dsad").indexOf(" ");
+    int index = encryptedMessage.getMessage().indexOf("a");
 
     
     assertEquals(index, -1);
