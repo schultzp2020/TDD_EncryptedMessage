@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import tdd.EncryptedMessage;
 
 /**
- * @author Paul, Lucas
+ * @author Paul, Lucas, Amine
  *
  */
 class EncryptedMessageTest {
@@ -175,14 +175,97 @@ class EncryptedMessageTest {
 
   @Test
   /**
-   * Example 2 from the Pair Programming Assignment but meant to fail
+   * Test for a space in key
    */
-  void example2TestFail() {
-    EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "cz");
+  void spaceKeyTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "c z");
 
-    assertNotEquals(encryptedMessage.getMessage(), "DACCG");
-
-    assertNotEquals(encryptedMessage.decryptMessage("PS"), "AB DD");
+    assertNull(encryptedMessage.getMessage());
   }
+  
+  @Test
+  /**
+   * Test for special characters in key
+   */
+  void specialCharactersKeyTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "c#");
 
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for empty string parameter for key
+   */
+  void specialCharactersKeyTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "");
+
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for null parameter for key
+   */
+  void nullKeyTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", null);
+
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for null parameter for message
+   */
+  void nullMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage(null, "a");
+
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for special characters in message
+   */
+  void specialCharactersMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab#dd", "a");
+
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for empty string parameter for message
+   */
+  void specialCharactersMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("", "a");
+
+    assertNull(encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for key longer than message
+   */
+  void keyLongerThanMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("a", "abcd");
+
+    assertEquals('B',encryptedMessage.getMessage());
+  }
+  
+  @Test
+  /**
+   * Test for upper case message
+   */
+  void upperCaseMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("A", "a");
+
+    assertEquals('B',encryptedMessage.getMessage());
+    assertEquals('A',encryptedMessage.decryptMessage('A'))
+  }
+  
+  
+  
+  
+  
 }
