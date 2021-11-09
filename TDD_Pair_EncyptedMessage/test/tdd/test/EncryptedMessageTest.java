@@ -111,7 +111,7 @@ class EncryptedMessageTest {
   
   @Test
   /**
-   * Test to see if the decrypted message converted the space to ASCII code 64
+   * Test to see if space in message gets converted correctly for encrypted message 
    */
   void encryptedMessageSpace() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("dad sad", "a");
@@ -125,7 +125,7 @@ class EncryptedMessageTest {
   
   @Test
   /**
-   * Test to see if the decrypted message does not contain ASCII code 64
+   * Test to see if no space in message gets converted correctly for encrypted message 
    */
   void decryptedMessageSpace() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("dadsad", "a");
@@ -264,8 +264,26 @@ class EncryptedMessageTest {
     assertEquals('A',encryptedMessage.decryptMessage('A'))
   }
   
+  @Test
+  /**
+   * Test for special characters in message 
+   */
+  void specialCharactersMessageTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("ab!", "a");
+
+    assertNull(encryptedMessage.getMessage());
+  }
   
-  
+  @Test
+  /**
+   * Test for mixed letters in message
+   */
+  void mixedCaseTest() {
+    EncryptedMessage encryptedMessage = new EncryptedMessage("aBcD", "a");
+
+    assertEquals('BCDE',encryptedMessage.getMessage());
+    assertEquals('ABCD',encryptedMessage.decryptMessage('A'))
+  }
   
   
 }
