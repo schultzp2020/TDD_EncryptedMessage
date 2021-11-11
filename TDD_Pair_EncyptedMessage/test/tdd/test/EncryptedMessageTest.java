@@ -55,26 +55,26 @@ class EncryptedMessageTest {
    */
   void constructorNotNull() {
     EncryptedMessage encryptedMessage1 = new EncryptedMessage("ab dd", "cz");
-    
+
     EncryptedMessage encryptedMessage2 = new EncryptedMessage("BCE");
 
     assertNotNull(encryptedMessage1);
 
     assertNotNull(encryptedMessage2);
   }
-  
+
   @Test
   /**
    * Test to see if the two constructors are the equal
    */
   void constructorCompare() {
-    EncryptedMessage encryptedMessage1 = new EncryptedMessage("ab dd", "cz");
-    
+    EncryptedMessage encryptedMessage1 = new EncryptedMessage("abd", "a");
+
     EncryptedMessage encryptedMessage2 = new EncryptedMessage("BCE");
 
-    assertEquals(encryptedMessage1, encryptedMessage2);
+    assertEquals(encryptedMessage1.getMessage(), encryptedMessage2.getMessage());
   }
-  
+
   @Test
   /**
    * Test to see if the encrypted message is upper case
@@ -88,10 +88,10 @@ class EncryptedMessageTest {
         isAllUpperCase = false;
       }
     }
-    
+
     assertTrue(isAllUpperCase);
   }
-  
+
   @Test
   /**
    * Test to see if the decrypted message is upper case
@@ -105,35 +105,33 @@ class EncryptedMessageTest {
         isAllUpperCase = false;
       }
     }
-    
+
     assertTrue(isAllUpperCase);
   }
-  
+
   @Test
   /**
-   * Test to see if space in message gets converted correctly for encrypted message 
+   * Test to see if space in message gets converted correctly for encrypted
+   * message
    */
   void encryptedMessageSpace() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("dad sad", "a");
 
+    int index = encryptedMessage.getMessage().indexOf("A");
 
-    int index = encryptedMessage.getMessage().indexOf("a");
-
-    
-    assertEquals(index, 3);
+    assertEquals(3, index);
   }
-  
+
   @Test
   /**
-   * Test to see if no space in message gets converted correctly for encrypted message 
+   * Test to see if no space in message gets converted correctly for encrypted
+   * message
    */
   void decryptedMessageSpace() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("dadsad", "a");
 
-
     int index = encryptedMessage.getMessage().indexOf("a");
 
-    
     assertEquals(index, -1);
   }
 
@@ -156,11 +154,11 @@ class EncryptedMessageTest {
   void example2Test() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "cz");
 
-    assertEquals(encryptedMessage.getMessage(), "DACCG");
+    assertEquals("DACCG", encryptedMessage.getMessage());
 
-    assertEquals(encryptedMessage.decryptMessage("CZ"), "AB DD");
+    assertEquals("AB DD", encryptedMessage.decryptMessage("CZ"));
   }
-  
+
   @Test
   /**
    * Example 1 from the Pair Programming Assignment but meant to fail
@@ -182,7 +180,7 @@ class EncryptedMessageTest {
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for special characters in key
@@ -192,17 +190,17 @@ class EncryptedMessageTest {
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for empty string parameter for key
    */
-  void specialCharactersKeyTest() {
+  void emptyStringKeyTest() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("ab dd", "");
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for null parameter for key
@@ -212,7 +210,7 @@ class EncryptedMessageTest {
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for null parameter for message
@@ -222,7 +220,7 @@ class EncryptedMessageTest {
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for special characters in message
@@ -232,17 +230,17 @@ class EncryptedMessageTest {
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for empty string parameter for message
    */
-  void specialCharactersMessageTest() {
+  void emptyStringMessageTest() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("", "a");
 
     assertNull(encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for key longer than message
@@ -250,9 +248,9 @@ class EncryptedMessageTest {
   void keyLongerThanMessageTest() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("a", "abcd");
 
-    assertEquals('B',encryptedMessage.getMessage());
+    assertEquals("B", encryptedMessage.getMessage());
   }
-  
+
   @Test
   /**
    * Test for upper case message
@@ -260,20 +258,10 @@ class EncryptedMessageTest {
   void upperCaseMessageTest() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("A", "a");
 
-    assertEquals('B',encryptedMessage.getMessage());
-    assertEquals('A',encryptedMessage.decryptMessage('A'))
+    assertEquals("B", encryptedMessage.getMessage());
+    assertEquals("A", encryptedMessage.decryptMessage("A"));
   }
-  
-  @Test
-  /**
-   * Test for special characters in message 
-   */
-  void specialCharactersMessageTest() {
-    EncryptedMessage encryptedMessage = new EncryptedMessage("ab!", "a");
 
-    assertNull(encryptedMessage.getMessage());
-  }
-  
   @Test
   /**
    * Test for mixed letters in message
@@ -281,9 +269,8 @@ class EncryptedMessageTest {
   void mixedCaseTest() {
     EncryptedMessage encryptedMessage = new EncryptedMessage("aBcD", "a");
 
-    assertEquals('BCDE',encryptedMessage.getMessage());
-    assertEquals('ABCD',encryptedMessage.decryptMessage('A'))
+    assertEquals("BCDE", encryptedMessage.getMessage());
+    assertEquals("ABCD",encryptedMessage.decryptMessage("A"));
   }
-  
-  
+
 }

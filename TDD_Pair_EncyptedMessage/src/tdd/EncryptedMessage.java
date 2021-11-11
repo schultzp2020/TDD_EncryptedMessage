@@ -22,7 +22,13 @@ public class EncryptedMessage {
   }
 
   public EncryptedMessage(String encryptedMessage) {
-    // TODO Auto-generated constructor stub
+    
+    if (Pattern.matches("[A-Z@]+", encryptedMessage)) {
+      mEncryptedMessage = encryptedMessage;
+      return;
+    }
+    
+    mEncryptedMessage = null;
   }
 
   public String getMessage() {
@@ -30,44 +36,76 @@ public class EncryptedMessage {
   };
 
   public String decryptMessage(String key) {
-    return "";
+    if (!validate(key, false)) {
+      return null;
+    }
+
+    char[] resultArray = new char[mEncryptedMessage.length()];
+
+    for (int i = 0; i < mEncryptedMessage.length(); i++) {
+      // Get the upper case letter at the index
+      char upperCaseKeyChar = Character.toUpperCase(key.charAt(i % key.length()));
+
+      int difference = (int) mEncryptedMessage.charAt(i) - (int) upperCaseKeyChar;
+
+      // Get the absolute value of the difference
+      if (difference < 0) {
+        difference += 27;
+      }
+
+      char result = (char) (difference + 64);
+
+      // If character is a space, turn into @ symbol.
+      if ((int) result == 64) {
+        result = (char) 32;
+      }
+
+      resultArray[i] = result;
+    }
+
+    return new String(resultArray);
   }
 
   private Boolean validate(String data, Boolean allowSpaces) {
-    return false;
+    if (data == null) {
+      return false;
+    }
+
+    if (allowSpaces) {
+      return Pattern.matches("[a-zA-Z\s]+", data);
+    }
+
+    return Pattern.matches("[a-zA-Z]+", data);
   }
 
   private void encryptMessage(String message, String key) {
-    // key can only have letters
-    if (!Pattern.matches("[a-zA-Z]+", key)) {
-      mEncryptedMessage = null;
-      return;
-    }
-    // message can have spaces and letters
-    if (!Pattern.matches("[a-zA-Z\s]+", message)) {
+    // validate the message and key
+    if (!(validate(key, false) && validate(message, true))) {
       mEncryptedMessage = null;
       return;
     }
 
-    char[] messageChArray = message.toCharArray();
-    char[] keyChArray = key.toCharArray();
-    char[] resultArray = new char[messageChArray.length];
+    char[] resultArray = new char[message.length()];
 
-    for (int i = 0; i < messageChArray.length; i++) {
-      // upper case letter for message at index
-      char messageCh = Character.toUpperCase(messageChArray[i]);
+    for (int i = 0; i < message.length(); i++) {
+      // Get the upper case letter at the index
+      char upperCaseMessageChar = Character.toUpperCase(message.charAt(i));
+      char upperCaseKeyChar = Character.toUpperCase(key.charAt(i % key.length()));
 
-      // if character is a space, turn into @ symbol.
-      if ((int) messageCh == 32) {
-        messageCh = (char) 64;
+      // If character is a space, turn into @ symbol.
+      if ((int) upperCaseMessageChar == 32) {
+        upperCaseMessageChar = (char) 64;
       }
 
-      // upper case letter for key at index
-      char keyCh = Character.toUpperCase(keyChArray[i % keyChArray.length]);
+      int difference = (int) upperCaseKeyChar - 64;
 
-      int difference = (int) keyCh - 64;
-      char result = (char) ((int) messageCh + difference);
-      resultArray[i] = result;
+      int result = (int) upperCaseMessageChar + difference;
+
+      if (result > 90) {
+        result -= 27;
+      }
+
+      resultArray[i] = (char) result;
     }
 
     mEncryptedMessage = new String(resultArray);
